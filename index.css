@@ -166,6 +166,30 @@ h1, h2, h3, h4 {
   transform: scale(1.05);
 }
 
+/* Language Toggle Button Style */
+.lang-toggle-button {
+  background: var(--neutral-white);
+  border: 1px solid rgba(45, 90, 39, 0.1);
+  color: var(--primary-base);
+  height: 38px;
+  padding: 0 12px;
+  border-radius: 19px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-headings);
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
+  transition: var(--transition-smooth);
+}
+
+.lang-toggle-button:hover, .lang-toggle-button:active {
+  background: var(--primary-light);
+  transform: scale(1.05);
+}
+
 /* Viewport & View Panels */
 .app-viewport {
   flex: 1;
@@ -278,6 +302,43 @@ h1, h2, h3, h4 {
 
 .leaflet-bar a:hover {
   background-color: var(--primary-light) !important;
+}
+
+/* Custom Map Language Switcher */
+.map-lang-control {
+  background: var(--sand-soft) !important;
+  border: 1px solid rgba(45, 90, 39, 0.1) !important;
+  border-radius: 30px !important;
+  display: flex !important;
+  flex-direction: row !important;
+  padding: 4px !important;
+  gap: 2px;
+  box-shadow: var(--box-shadow-medium) !important;
+}
+
+.map-lang-btn {
+  background: transparent;
+  border: none;
+  color: var(--primary-base);
+  font-family: var(--font-headings);
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 6px 10px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  outline: none;
+}
+
+.map-lang-btn.active {
+  background-color: var(--primary-base);
+  color: var(--sand-soft);
+  box-shadow: 0 2px 6px rgba(53, 109, 48, 0.2);
+}
+
+.map-lang-btn:hover:not(.active) {
+  background-color: var(--primary-light);
+  color: var(--primary-deep);
 }
 
 /* Custom Marker Pins */

@@ -36,13 +36,16 @@
     <header class="app-header">
       <div class="header-left">
         <span class="city-en">CHIANG MAI</span>
-        <h1 class="city-zh">泰想去清邁 🧭</h1>
+        <h1 class="city-zh" id="app-title">泰想去清邁 🧭</h1>
       </div>
       <div class="header-right">
         <div class="weather-widget">
           <span class="temp">31°C</span>
           <span class="condition">☀️ Chiang Mai</span>
         </div>
+        <button id="btn-lang" class="lang-toggle-button" aria-label="切換語言" title="Switch Language">
+          EN
+        </button>
         <button id="btn-settings" class="icon-button" aria-label="設定" title="Google Maps API 設定">
           <i data-lucide="settings"></i>
         </button>
@@ -80,7 +83,7 @@
 
         <!-- Float Map Tips -->
         <div class="map-helper-tip">
-          <i data-lucide="info" size="14"></i> 點選地標顯示推薦菜色與藍亦明、小客等來源評價
+          <i data-lucide="info" size="14"></i> <span id="map-helper-text">點選地標顯示推薦菜色與藍亦明、小客等來源評價</span>
         </div>
 
         <!-- Slide-up Info Card / Drawer -->
@@ -101,15 +104,15 @@
               
               <div class="drawer-info-row">
                 <div class="info-block">
-                  <span class="label">🌟 推薦招牌 / 價格特色</span>
+                  <span class="label" id="label-recommend">🌟 推薦招牌 / 價格特色</span>
                   <span id="drawer-recommend" class="value">招牌牛肉金麵 (Khao Soi Beef)</span>
                 </div>
                 <div class="info-block">
-                  <span class="label">🕒 營業時間與狀態</span>
+                  <span class="label" id="label-hours">🕒 營業時間與狀態</span>
                   <span id="drawer-hours" class="value">10:00 - 22:00 <span id="drawer-status" class="status-badge open">營業中</span></span>
                 </div>
                 <div class="info-block">
-                  <span class="label">📍 來源標籤</span>
+                  <span class="label" id="label-source">📍 來源標籤</span>
                   <span id="drawer-source" class="value source-badge">YouTube 藍亦明推薦</span>
                 </div>
               </div>
@@ -420,15 +423,15 @@
       <div class="nav-indicator-slider"></div>
       <button class="nav-item active" data-tab="tab-map">
         <i data-lucide="map"></i>
-        <span>探索地圖</span>
+        <span id="nav-text-map">探索地圖</span>
       </button>
       <button class="nav-item" data-tab="tab-attractions">
         <i data-lucide="compass"></i>
-        <span>景點活動</span>
+        <span id="nav-text-attractions">景點活動</span>
       </button>
       <button class="nav-item" data-tab="tab-preparation">
         <i data-lucide="check-square"></i>
-        <span>出發準備</span>
+        <span id="nav-text-preparation">出發準備</span>
       </button>
     </nav>
   </div>
