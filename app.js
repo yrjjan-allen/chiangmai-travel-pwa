@@ -237,7 +237,10 @@ const TRANSLATIONS = {
     status_closed: '已打烊',
     status_sunday: '未營業 (僅週日開)',
     status_unknown: '時間未明',
-    popup_text: '點擊顯示詳細介紹'
+    popup_text: '點擊顯示詳細介紹',
+    btn_locate_title: '定位我的位置',
+    popup_user_location: '您的位置',
+    error_geolocation: '無法取得您的位置，請確認是否已授權瀏覽器定位權限。'
   },
   en: {
     title: 'Chiang Mai Buddy 🧭',
@@ -258,13 +261,17 @@ const TRANSLATIONS = {
     status_closed: 'Closed Now',
     status_sunday: 'Closed (Sunday Only)',
     status_unknown: 'Hours Unknown',
-    popup_text: 'Click to show details'
+    popup_text: 'Click to show details',
+    btn_locate_title: 'Locate Me',
+    popup_user_location: 'Your Location',
+    error_geolocation: 'Unable to retrieve your location. Please check your browser location permissions.'
   }
 };
 
 // --- 3. GLOBAL STATE ---
 let map = null;
 let activeTileLayer = null;
+let userLocationMarker = null;
 let markerGroup = null;
 let currentActiveMarker = null;
 let currentLang = localStorage.getItem('app_lang') || 'zh';
@@ -395,6 +402,31 @@ function initLeafletMap() {
   });
 
   map.addControl(new MapLangControl());
+
+  // Create a custom Leaflet Control for Geolocation "Locate Me"
+  const LocateMeControl = L.Control.extend({
+    options: {
+      position: 'topright'
+    },
+    onAdd: function(map) {
+      const container = L.DomUtil.create('div', 'leaflet-bar locate-control');
+      container.innerHTML = `
+        <button id="map-btn-locate" class="locate-btn" title="${currentLang === 'zh' ? '定位我的位置' : 'Locate Me'}" aria-label="Locate Me">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-locate"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/><line x1="12" x2="12" y1="1" y2="3"/><line x1="12" x2="12" y1="21" y2="23"/><line x1="1" x2="3" y1="12" y2="12"/><line x1="21" x2="23" y1="12" y2="12"/></svg>
+        </button>
+      `;
+      
+      // Stop clicks from bubbling to the map
+      L.DomEvent.disableClickPropagation(container);
+      
+      const btnLocate = container.querySelector('#map-btn-locate');
+      btnLocate.addEventListener('click', locateUser);
+      
+      return container;
+    }
+  });
+
+  map.addControl(new LocateMeControl());
 
   // Group for easy clearing / adding pins
   markerGroup = L.layerGroup().addTo(map);
@@ -636,6 +668,73 @@ function changeAppLanguage(lang) {
   }
 }
 
+// Locate the user's current GPS position
+function locateUser() {
+  const dict = TRANSLATIONS[currentLang];
+  
+  if (!navigator.geolocation) {
+    alert(dict.error_geolocation);
+    return;
+  }
+  
+  const btnLocate = document.getElementById('map-btn-locate');
+  if (btnLocate) {
+    btnLocate.classList.add('loading');
+  }
+
+  navigator.geolocation.getCurrentPosition(
+    (position) => {
+      if (btnLocate) {
+        btnLocate.classList.remove('loading');
+      }
+      
+      const { latitude, longitude, accuracy } = position.coords;
+      const userLatLng = [latitude, longitude];
+      
+      // Smoothly pan and zoom to user's location
+      map.setView(userLatLng, 16);
+      
+      // Update or create user location pulsing marker
+      if (userLocationMarker) {
+        userLocationMarker.setLatLng(userLatLng);
+      } else {
+        const pulsingIcon = L.divIcon({
+          className: 'user-location-marker-container',
+          html: `
+            <div class="user-pulse-dot"></div>
+            <div class="user-pulse-wave"></div>
+          `,
+          iconSize: [24, 24],
+          iconAnchor: [12, 12]
+        });
+        
+        userLocationMarker = L.marker(userLatLng, { icon: pulsingIcon }).addTo(map);
+      }
+      
+      // Bind bilingual user location popup
+      const userPopupContent = `
+        <div class="user-location-popup">
+          <h4>${dict.popup_user_location}</h4>
+          <p>${latitude.toFixed(5)}, ${longitude.toFixed(5)} (±${Math.round(accuracy)}m)</p>
+        </div>
+      `;
+      userLocationMarker.bindPopup(userPopupContent).openPopup();
+    },
+    (error) => {
+      if (btnLocate) {
+        btnLocate.classList.remove('loading');
+      }
+      console.error('Geolocation error:', error);
+      alert(dict.error_geolocation);
+    },
+    {
+      enableHighAccuracy: true,
+      timeout: 10000,
+      maximumAge: 0
+    }
+  );
+}
+
 // --- 8. CHECKLIST ACCORDION & STATE PERSISTENCE ---
 function initChecklist() {
   // A. Accordion Expansion Toggle
@@ -800,6 +899,12 @@ function updateUILanguage() {
       pill.innerHTML = `<span class="pill-emoji">💆</span> ${dict.massage}`;
     }
   });
+  
+  // F. Locate Button Tooltip
+  const btnLocate = document.getElementById('map-btn-locate');
+  if (btnLocate) {
+    btnLocate.setAttribute('title', dict.btn_locate_title);
+  }
 }
 
 // --- 11. PWA SERVICE WORKER REGISTRATION ---
