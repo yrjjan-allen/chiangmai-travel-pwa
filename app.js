@@ -16,6 +16,9 @@ const SPOTS_DATA = [
     tagName: '泰北金麵',
     intro: '位於清邁古城北門旁的傳奇金麵，被許多人評為清邁最傳統好吃的泰北金麵！湯頭椰奶椰香濃郁、層次感十足。',
     recommend: '招牌雞肉金麵 (Khao Soi Gai) 70 THB',
+    openTime: '10:00',
+    closeTime: '14:00',
+    hoursDisplay: '10:00 - 14:00 (週日公休)',
     source: 'YouTube 萬人觀看推薦'
   },
   {
@@ -28,6 +31,9 @@ const SPOTS_DATA = [
     tagName: '泰北金麵',
     intro: '榮獲米其林必比登推薦的超人氣金麵店，湯頭非常濃郁偏辣，椰奶風味與脆麵條完美咬合。',
     recommend: '牛肉金麵 (Khao Soi Beef) + 泰式奶茶',
+    openTime: '08:00',
+    closeTime: '16:00',
+    hoursDisplay: '08:00 - 16:00 (週日公休)',
     source: '米其林必比登推薦'
   },
   {
@@ -40,6 +46,9 @@ const SPOTS_DATA = [
     tagName: '夜市小吃',
     intro: '清邁北門夜市最著名的招牌小吃，老闆娘戴著標誌性牛仔帽。豬腳燉得極為軟爛入味，搭配半熟蛋與特製酸菜，讓人一口接一口。',
     recommend: '招牌豬腳飯 (小份 50 THB / 加肉 80 THB)',
+    openTime: '17:00',
+    closeTime: '23:59',
+    hoursDisplay: '17:00 - 24:00 (無休)',
     source: '各大部落格一致推薦'
   },
   {
@@ -52,6 +61,9 @@ const SPOTS_DATA = [
     tagName: '夜市小吃',
     intro: '清邁最大最著名的週末市集。每週日下午在古城主幹道封路封街，有上千家手工藝品、平價小吃、現烤香熱烤肉串與地道泰式炒麵。',
     recommend: '香木烤豬肉串 10 THB、現炒 Pad Thai 40 THB',
+    openTime: '17:00',
+    closeTime: '22:00',
+    hoursDisplay: '僅週日 17:00 - 22:00',
     source: '部落客小客實地推薦'
   },
   {
@@ -64,6 +76,9 @@ const SPOTS_DATA = [
     tagName: '文青咖啡',
     intro: '清邁網美打卡風潮的開山始祖之一。以黑白冷淡風與高品質「創意特調咖啡」風靡清邁，將冷萃、竹炭與新鮮果汁做驚艷結合。',
     recommend: 'Monochrome (竹炭拿鐵)、Lost Garden (玫瑰冷萃)',
+    openTime: '09:00',
+    closeTime: '17:30',
+    hoursDisplay: '09:00 - 17:30 (無休)',
     source: 'YouTube 藍亦明推薦'
   },
   {
@@ -76,7 +91,70 @@ const SPOTS_DATA = [
     tagName: '文青咖啡',
     intro: '坐落於清邁美萍河畔的超人氣極簡美學咖啡館。水泥灰牆、工業風與通透大窗引進河畔天光，是拍照與放空的上乘去處。',
     recommend: 'Triple Espresso (三色漸層濃縮)、椰子千層蛋糕',
+    openTime: '08:00',
+    closeTime: '18:00',
+    hoursDisplay: '08:00 - 18:00 (無休)',
     source: '各大部落格必推打卡店'
+  },
+  {
+    id: 'fah-lanna-spa-oldcity',
+    name: 'Fah Lanna Spa (古城蘭納風 SPA)',
+    category: 'massage',
+    lat: 18.7925,
+    lng: 98.9812,
+    emoji: '💆',
+    tagName: '泰式按摩',
+    intro: '清邁最頂級精緻的泰北蘭納風格水療館，以熱帶竹子庭園和專業木槌按摩 (Tok Sen) 聞名，環境優雅幽靜。',
+    recommend: '經典蘭納古法木槌按摩 (Lanna Tok Sen) 約 1,200 THB',
+    openTime: '10:00',
+    closeTime: '22:00',
+    hoursDisplay: '10:00 - 22:00 (無休)',
+    source: '部落客小客特選推薦'
+  },
+  {
+    id: 'lila-massage-oldcity',
+    name: 'Lila Thai Massage (女子監獄更生人按摩)',
+    category: 'massage',
+    lat: 18.7885,
+    lng: 98.9875,
+    emoji: '💆',
+    tagName: '泰式按摩',
+    intro: '由前清邁女子監獄長創立，旨在培訓出獄女性按摩技能以重返社會。按摩師手法純熟有力，價格極具CP值，服務親切。',
+    recommend: '泰式古法全身按摩 350 THB / 2小時',
+    openTime: '10:00',
+    closeTime: '22:00',
+    hoursDisplay: '10:00 - 22:00 (無休)',
+    source: 'YouTube 藍亦明親體驗推薦'
+  },
+  {
+    id: 'lets-relax-one-nimman',
+    name: 'Let\'s Relax Spa (寧曼一號店)',
+    category: 'massage',
+    lat: 18.8005,
+    lng: 98.9680,
+    emoji: '💆',
+    tagName: '泰式按摩',
+    intro: '泰國知名的連鎖高端 Spa 品牌，服務高度標準化且貼心，環境香氣怡人。按摩結束後附贈美味的「芒果糯米飯」是最大亮點！',
+    recommend: '泰式草藥球熱敷按摩 1,200 THB / 2小時',
+    openTime: '10:00',
+    closeTime: '23:59',
+    hoursDisplay: '10:00 - 24:00 (無休)',
+    source: '各大部落格一致好評推薦'
+  },
+  {
+    id: 'mandeene-massage-oldcity',
+    name: 'Mandeene Massage (曼迪恩平價放鬆按摩)',
+    category: 'massage',
+    lat: 18.7892,
+    lng: 98.9830,
+    emoji: '💆',
+    tagName: '泰式按摩',
+    intro: '古城內評價極高的平價按摩小店，服務細緻乾淨、力道非常到位。是小預算旅客行經古城累了時最佳的放鬆選擇。',
+    recommend: '腳底精油按摩 300 THB / 1小時',
+    openTime: '11:00',
+    closeTime: '22:30',
+    hoursDisplay: '11:00 - 22:30 (無休)',
+    source: '部落客小客實地推薦'
   }
 ];
 
@@ -257,6 +335,46 @@ function renderMarkers(category) {
   });
 }
 
+// Check Open Status dynamically based on local time
+function checkOpenStatus(spot) {
+  const now = new Date();
+  const currentDay = now.getDay(); // 0 = Sunday, 1 = Monday, etc.
+
+  // Special rule: Sunday Night Market
+  if (spot.id === 'sunday-walking-street') {
+    if (currentDay !== 0) {
+      return { text: '未營業 (僅週日開)', isOpen: false };
+    }
+  }
+
+  const openStr = spot.openTime;
+  const closeStr = spot.closeTime;
+  if (!openStr || !closeStr) return { text: '時間未明', isOpen: false };
+
+  const currentHour = now.getHours();
+  const currentMin = now.getMinutes();
+  const currentTimeVal = currentHour * 60 + currentMin;
+
+  const [oHour, oMin] = openStr.split(':').map(Number);
+  const [cHour, cMin] = closeStr.split(':').map(Number);
+  
+  const oVal = oHour * 60 + oMin;
+  let cVal = cHour * 60 + cMin;
+
+  if (cVal < oVal) {
+    // Closes past midnight (e.g. 17:00 to 02:00 next day)
+    if (currentTimeVal >= oVal || currentTimeVal <= cVal) {
+      return { text: '營業中', isOpen: true };
+    }
+  } else {
+    if (currentTimeVal >= oVal && currentTimeVal <= cVal) {
+      return { text: '營業中', isOpen: true };
+    }
+  }
+
+  return { text: '已打烊', isOpen: false };
+}
+
 // Drawer Transitions
 function openDrawer(spot) {
   drawerTag.textContent = spot.tagName;
@@ -264,6 +382,14 @@ function openDrawer(spot) {
   drawerIntro.textContent = spot.intro;
   drawerRecommend.textContent = spot.recommend;
   drawerSource.textContent = spot.source;
+
+  // Set Hours Display & Compute Open Status
+  const hoursDisplayEl = document.getElementById('drawer-hours');
+  if (hoursDisplayEl) {
+    const status = checkOpenStatus(spot);
+    const badgeClass = status.isOpen ? 'open' : 'closed';
+    hoursDisplayEl.innerHTML = `${spot.hoursDisplay} <span id="drawer-status" class="status-badge ${badgeClass}">${status.text}</span>`;
+  }
 
   // Add source-specific style class if needed
   if (spot.source.includes('藍亦明')) {

@@ -493,6 +493,30 @@ h1, h2, h3, h4 {
   font-size: 0.8rem;
 }
 
+/* Status Badge for Store Opening Hours */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  margin-left: 8px;
+  vertical-align: middle;
+}
+
+.status-badge.open {
+  background-color: hsl(134, 45%, 90%);
+  color: hsl(134, 55%, 25%);
+  border: 1px solid hsl(134, 45%, 80%);
+}
+
+.status-badge.closed {
+  background-color: hsl(0, 75%, 95%);
+  color: hsl(0, 60%, 40%);
+  border: 1px solid hsl(0, 75%, 90%);
+}
+
 /* ------------------------------------------
    TAB 2: ATTRACTIONS
    ------------------------------------------ */
