@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>泰想去清邁 | Chiang Mai Travel Buddy</title>
+  
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="專為清邁出國旅遊設計的精緻 PWA 導覽 App。包含探索地圖、熱門景點小吃、出發準備清單，支援離線使用與精美夜沙色與森林綠風格。">
+  <meta name="theme-color" content="#2D5A27">
+  
+  <!-- PWA Manifest & Icons -->
+  <link rel="manifest" href="./manifest.json">
+  <link rel="apple-touch-icon" href="./icon.png">
+  <link rel="icon" type="image/png" href="./icon.png">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Leaflet Map CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- App Custom Stylesheet -->
+  <link rel="stylesheet" href="./index.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Header Area -->
+    <header class="app-header">
+      <div class="header-left">
+        <span class="city-en">CHIANG MAI</span>
+        <h1 class="city-zh">泰想去清邁 🧭</h1>
+      </div>
+      <div class="header-right">
+        <div class="weather-widget">
+          <span class="temp">31°C</span>
+          <span class="condition">☀️ Chiang Mai</span>
+        </div>
+        <button id="btn-settings" class="icon-button" aria-label="設定" title="Google Maps API 設定">
+          <i data-lucide="settings"></i>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Viewport containing Tabs -->
+    <main class="app-viewport">
+      
+      <!-- 1. Map Tab -->
+      <section id="tab-map" class="tab-content active">
+        <div class="map-pills-container">
+          <button class="pill-btn active" data-category="all">
+            <span class="pill-emoji">✨</span> 全部小吃
+          </button>
+          <button class="pill-btn" data-category="khao_soi">
+            <span class="pill-emoji">🍜</span> 泰北金麵
+          </button>
+          <button class="pill-btn" data-category="night_market">
+            <span class="pill-emoji">🍢</span> 夜市小吃
+          </button>
+          <button class="pill-btn" data-category="cafe">
+            <span class="pill-emoji">☕</span> 文青咖啡
+          </button>
+          <button class="pill-btn" data-category="restaurant">
+            <span class="pill-emoji">🌿</span> 網美餐廳
+          </button>
+        </div>
+        
+        <!-- The Map -->
+        <div id="map" class="map-view-box"></div>
+
+        <!-- Float Map Tips -->
+        <div class="map-helper-tip">
+          <i data-lucide="info" size="14"></i> 點選地標顯示推薦菜色與藍亦明、小客等來源評價
+        </div>
+
+        <!-- Slide-up Info Card / Drawer -->
+        <div id="details-drawer" class="details-drawer">
+          <div class="drawer-handle-bar">
+            <div class="handle"></div>
+          </div>
+          <div class="drawer-content">
+            <button id="btn-close-drawer" class="close-drawer-btn" aria-label="關閉詳細資訊">
+              <i data-lucide="x"></i>
+            </button>
+            <div class="drawer-header">
+              <span id="drawer-tag" class="drawer-tag">泰北金麵</span>
+              <h2 id="drawer-title" class="drawer-title">Khao Soi Maesai</h2>
+            </div>
+            <div class="drawer-body">
+              <p id="drawer-intro" class="drawer-intro">清邁最傳奇的泰北金麵店之一，深受在地人與遊客喜愛。湯頭椰奶香氣濃郁，麵條炸得金黃酥脆。</p>
+              
+              <div class="drawer-info-row">
+                <div class="info-block">
+                  <span class="label">🌟 推薦菜色</span>
+                  <span id="drawer-recommend" class="value">招牌牛肉金麵 (Khao Soi Beef)</span>
+                </div>
+                <div class="info-block">
+                  <span class="label">📍 來源標籤</span>
+                  <span id="drawer-source" class="value source-badge">YouTube 藍亦明推薦</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2. Attractions Tab -->
+      <section id="tab-attractions" class="tab-content">
+        <div class="tab-section-header">
+          <h2>⛩️ 精選景點與付費活動</h2>
+          <p>全中文精選清邁當地最經典熱門的推薦體驗</p>
+        </div>
+        
+        <div id="attractions-list" class="attractions-grid">
+          <!-- Dynamically populated via JavaScript or hardcoded for SEO indexing -->
+          <!-- Hardcoded for performance and SEO indexing -->
+          <div class="attraction-card">
+            <div class="card-image-placeholder elephant-bg">
+              <span class="card-category">生態體驗 (付費)</span>
+            </div>
+            <div class="card-body">
+              <h3 class="card-title">大象友善體驗營 (Elephant Jungle Sanctuary)</h3>
+              <div class="card-meta">
+                <span class="meta-item"><i data-lucide="dollar-sign"></i> 費用約 1,600 - 2,500 THB</span>
+                <span class="meta-item"><i data-lucide="clock"></i> 建議 半天/全天</span>
+              </div>
+              <p class="card-desc">包含中英文雙語專業導覽，與大象近距離友善互動、親手做營養食物，並下水陪大象洗泥巴浴與溪流淨身。</p>
+              <a href="https://www.youtube.com/results?search_query=Elephant+Jungle+Sanctuary+清邁" target="_blank" rel="noopener" class="card-btn">
+                <i data-lucide="youtube"></i> 觀看大象體驗實況
+              </a>
+            </div>
+          </div>
+
+          <div class="attraction-card">
+            <div class="card-image-placeholder temple-bg">
+              <span class="card-category">廚藝體驗 (付費)</span>
+            </div>
+            <div class="card-body">
+              <h3 class="card-title">清邁廚藝學校一日遊 (Mama Noi Cookery School)</h3>
+              <div class="card-meta">
+                <span class="meta-item"><i data-lucide="dollar-sign"></i> 費用約 800 THB</span>
+                <span class="meta-item"><i data-lucide="clock"></i> 建議 4-6 小時</span>
+              </div>
+              <p class="card-desc">前往清邁當地菜市場認識泰國辛香料與選購食材，在有機農場教室裡親手烹飪經典泰式炒麵、綠咖哩及芒果糯米飯。</p>
+              <a href="https://www.youtube.com/results?search_query=Mama+Noi+泰式料理廚藝學校" target="_blank" rel="noopener" class="card-btn">
+                <i data-lucide="youtube"></i> 查看廚藝課程開箱
+              </a>
+            </div>
+          </div>
+
+          <div class="attraction-card">
+            <div class="card-image-placeholder suthep-bg">
+              <span class="card-category">風景名勝 (熱門)</span>
+            </div>
+            <div class="card-body">
+              <h3 class="card-title">素帖山雙龍寺 (Wat Phra That Doi Suthep)</h3>
+              <div class="card-meta">
+                <span class="meta-item"><i data-lucide="dollar-sign"></i> 門票 30 THB</span>
+                <span class="meta-item"><i data-lucide="clock"></i> 建議 2-3 小時</span>
+              </div>
+              <p class="card-desc">清邁必訪地標！沿著306階雙龍雕刻石階（或搭乘纜車）登上山頂金色巨型舍利塔，可無死角俯瞰整個清邁市區全景。</p>
+              <a href="https://www.youtube.com/results?search_query=清邁雙龍寺+素帖山" target="_blank" rel="noopener" class="card-btn">
+                <i data-lucide="youtube"></i> 藍亦明與小客開箱
+              </a>
+            </div>
+          </div>
+
+          <div class="attraction-card">
+            <div class="card-image-placeholder chedi-bg">
+              <span class="card-category">歷史古蹟 (熱門)</span>
+            </div>
+            <div class="card-body">
+              <h3 class="card-title">柴迪隆寺 / 大佛塔寺 (Wat Chedi Luang)</h3>
+              <div class="card-meta">
+                <span class="meta-item"><i data-lucide="dollar-sign"></i> 門票 50 THB</span>
+                <span class="meta-item"><i data-lucide="clock"></i> 建議 1-1.5 小時</span>
+              </div>
+              <p class="card-desc">古城中心最宏偉的巨型佛塔古蹟，雖在16世紀因地震半毀，但高聳殘缺的石雕外牆仍散發著令人屏息的歷史滄桑與莊嚴美感。</p>
+              <a href="https://www.youtube.com/results?search_query=清邁柴迪隆寺" target="_blank" rel="noopener" class="card-btn">
+                <i data-lucide="external-link"></i> 查閱部落格歷史導覽
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3. Preparation Tab -->
+      <section id="tab-preparation" class="tab-content">
+        <div class="tab-section-header">
+          <h2>📋 行前準備檢查清單</h2>
+          <p>準備越齊全，旅程越順心。勾選後進度將自動保存。</p>
+        </div>
+
+        <div class="preparation-accordions">
+          
+          <!-- Category 1 -->
+          <div class="accordion-item active" data-category="currency">
+            <div class="accordion-header">
+              <div class="header-left-title">
+                <span class="icon">💰</span>
+                <h3>換幣提醒與理財</h3>
+              </div>
+              <div class="progress-container">
+                <span class="progress-text">0%</span>
+                <div class="progress-bar-bg">
+                  <div class="progress-bar-fill"></div>
+                </div>
+              </div>
+              <i data-lucide="chevron-down" class="accordion-arrow"></i>
+            </div>
+            <div class="accordion-content">
+              <ul class="checkbox-list">
+                <li>
+                  <label class="checkbox-label">
+                    <input type="checkbox" data-id="curr-superrich">
+                    <span class="custom-checkbox"></span>
+                    <span class="text">古城內的 Super Rich 匯率通常最好，建議帶台幣或美金現鈔去換。</span>
+                  </label>
+                </li>
+                <li>
+                  <label class="checkbox-label">
+                    <input type="checkbox" data-id="curr-atm">
+                    <span class="custom-checkbox"></span>
+                    <span class="text">注意當地 ATM 提款每筆固定收 220 THB 手續費，建議一次提足額度</span>
+                  </label>
+                </li>
+                <li>
+                  <label class="checkbox-label">
+                    <input type="checkbox" data-id="curr-small-cash">
+                    <span class="custom-checkbox"></span>
+                    <span class="text">預先備妥少量小面額紙鈔（20, 50, 100 THB），以支付雙條車、夜市等小額消費</span>
+                  </label>
+                </li>
+                <li>
+                  <label class="checkbox-label">
+                    <input type="checkbox" data-id="curr-card">
+                    <span class="custom-checkbox"></span>
+                    <span class="text">準備一張高海外回饋的信用卡（部分百貨商場或文青小店支援刷卡或感應支付）</span>
+                  </label>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Category 2 -->
+          <div class="accordion-item" data-category="visa">
+            <div class="accordion-header">
+              <div class="header-left-title">
+                <span class="icon">📄</span>
+                <h3>簽證與隨身文件</h3>
+              </div>
+              <div class="progress-container">
+                <span class="progress-text">0%</span>
+                <div class="progress-bar-bg">
+                  <div class="progress-bar-fill"></div>
+                </div>
+              </div>
+              <i data-lucide="chevron-down" class="accordion-arrow"></i>
+            </div>
+            <div class="accordion-content">
+              <ul class="checkbox-list">
+                <li>
+                  <label class="checkbox-label">
+                    <input type="checkbox" data-id="visa-passport">
+                    <span class="custom-checkbox"></span>
+                    <span class="text">確認護照效期自出發當日起算大於 6 個月</span>
+                  </label>
+                </li>
+                <li>
+                  <label class="checkbox-label">
+                    <input type="checkbox" data-id="visa-policy">
+                    <span class="custom-checkbox"></span>
+                    <span class="text">確認泰國當前的免簽/電子簽證政策，並備妥回程機票與訂房證明以防海關查驗</span>
+                  </label>
+                </li>
+                <li>
+                  <label class="checkbox-label">
+                    <input type="checkbox" data-id="visa-backup">
+                    <span class="custom-checkbox"></span>
+                    <span class="text">將護照影本與重要聯絡電話上傳至雲端硬碟，以防遺失時備用</span>
+                  </label>
+                </li>
+                <li>
+                  <label class="checkbox-label">
+                    <input type="checkbox" data-id="visa-docs">
+                    <span class="custom-checkbox"></span>
+                    <span class="text">列印或離線儲存電子機票、訂房確認憑證以及旅遊平安險英文版證明</span>
+                  </label>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Category 3 -->
+          <div class="accordion-item" data-category="transport">
+            <div class="accordion-header">
+              <div class="header-left-title">
+                <span class="icon">🚗</span>
+                <h3>交通與網路通訊</h3>
+              </div>
+              <div class="progress-container">
+                <span class="progress-text">0%</span>
+                <div class="progress-bar-bg">
+                  <div class="progress-bar-fill"></div>
+                </div>
+              </div>
+              <i data-lucide="chevron-down" class="accordion-arrow"></i>
+            </div>
+            <div class="accordion-content">
+              <ul class="checkbox-list">
+                <li>
+                  <label class="checkbox-label">
+                    <input type="checkbox" data-id="trans-apps">
+                    <span class="custom-checkbox"></span>
+                    <span class="text">在清邁使用 Bolt 通常比 Grab 更便宜，但建議兩者都下載以備不時之需；尖峰時段叫 Bolt 可能要等比較久。</span>
+                  </label>
+                </li>
+                <li>
+                  <label class="checkbox-label">
+                    <input type="checkbox" data-id="trans-card-bind">
+                    <span class="custom-checkbox"></span>
+                    <span class="text">在台灣先完成叫車 App 的註冊與信用卡綁定，防在當地因簡訊驗證碼問題無法登入</span>
+                  </label>
+                </li>
+                <li>
+                  <label class="checkbox-label">
+                    <input type="checkbox" data-id="trans-sim">
+                    <span class="custom-checkbox"></span>
+                    <span class="text">準備泰國 5G 網卡/eSIM，推薦選擇 AIS 或 TrueMove（清邁古城與山區訊號較為穩定）</span>
+                  </label>
+                </li>
+                <li>
+                  <label class="checkbox-label">
+                    <input type="checkbox" data-id="trans-offline-map">
+                    <span class="custom-checkbox"></span>
+                    <span class="text">下載 Google Maps 清邁古城區域的「離線地圖」，以防山區或偏遠景點斷網</span>
+                  </label>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Category 4 -->
+          <div class="accordion-item" data-category="tips">
+            <div class="accordion-header">
+              <div class="header-left-title">
+                <span class="icon">💡</span>
+                <h3>清邁當地貼心提醒</h3>
+              </div>
+              <div class="progress-container">
+                <span class="progress-text">0%</span>
+                <div class="progress-bar-bg">
+                  <div class="progress-bar-fill"></div>
+                </div>
+              </div>
+              <i data-lucide="chevron-down" class="accordion-arrow"></i>
+            </div>
+            <div class="accordion-content">
+              <ul class="checkbox-list">
+                <li>
+                  <label class="checkbox-label">
+                    <input type="checkbox" data-id="tips-songthaew">
+                    <span class="custom-checkbox"></span>
+                    <span class="text">紅色雙條車（Songthaew）古城內公定價約 30-50 THB /人，上車前務必跟司機問好價格</span>
+                  </label>
+                </li>
+                <li>
+                  <label class="checkbox-label">
+                    <input type="checkbox" data-id="tips-temple-dress">
+                    <span class="custom-checkbox"></span>
+                    <span class="text">進入清邁寺廟切勿穿著無袖上衣、短褲或短裙（膝蓋以上），大廟多有沙龍可租借</span>
+                  </label>
+                </li>
+                <li>
+                  <label class="checkbox-label">
+                    <input type="checkbox" data-id="tips-mosquito">
+                    <span class="custom-checkbox"></span>
+                    <span class="text">清邁蚊蟲極多，建議抵達後直接去 7-11 購買 Soffell 綠瓶防蚊液，防蚊效果顯著</span>
+                  </label>
+                </li>
+                <li>
+                  <label class="checkbox-label">
+                    <input type="checkbox" data-id="tips-water">
+                    <span class="custom-checkbox"></span>
+                    <span class="text">泰國自來水不可直接飲用，日常飲水與刷口水建議皆使用超商購買之瓶裝礦泉水</span>
+                  </label>
+                </li>
+                <li>
+                  <label class="checkbox-label">
+                    <input type="checkbox" data-id="tips-medicine">
+                    <span class="custom-checkbox"></span>
+                    <span class="text">攜帶腸胃藥、暈車藥與感冒藥等常備藥品，防止泰式酸辣口味引起水土不服</span>
+                  </label>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Bottom Navigation Bar -->
+    <nav class="app-nav-bar">
+      <div class="nav-indicator-slider"></div>
+      <button class="nav-item active" data-tab="tab-map">
+        <i data-lucide="map"></i>
+        <span>探索地圖</span>
+      </button>
+      <button class="nav-item" data-tab="tab-attractions">
+        <i data-lucide="compass"></i>
+        <span>景點活動</span>
+      </button>
+      <button class="nav-item" data-tab="tab-preparation">
+        <i data-lucide="check-square"></i>
+        <span>出發準備</span>
+      </button>
+    </nav>
+  </div>
+
+  <!-- Settings Modal (Google Maps API Key config) -->
+  <div id="settings-modal" class="modal-backdrop">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h2>⚙️ 設定</h2>
+        <button id="btn-close-settings" class="icon-button" aria-label="關閉"><i data-lucide="x"></i></button>
+      </div>
+      <div class="modal-body">
+        <p class="modal-desc">本 App 預設使用免費的 Leaflet.js 渲染真實清邁古城地圖。您也可以在此串接您的 Google Maps API 金鑰，切換至原生 Google Maps 服務。</p>
+        
+        <div class="form-group">
+          <label for="gmaps-api-key">Google Maps API 金鑰 (API Key)</label>
+          <input type="password" id="gmaps-api-key" placeholder="AIzaSy..." class="form-input">
+          <p class="input-help">金鑰將安全地儲存於本機瀏覽器 (localStorage) 中。</p>
+        </div>
+
+        <div class="api-status-badge inactive" id="api-status">
+          <span class="dot"></span> <span>目前使用 Leaflet.js 引擎 (免 API 金鑰)</span>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="btn-reset-key" class="btn btn-secondary">清除金鑰</button>
+        <button id="btn-save-key" class="btn btn-primary">儲存設定</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Leaflet Map JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  
+  <!-- Main Application Logic -->
+  <script src="./app.js"></script>
+</body>
+</html>

@@ -1,0 +1,18 @@
+{
+  "name": "泰想去清邁 | Chiang Mai Travel Buddy",
+  "short_name": "泰想去清邁",
+  "description": "專為清邁設計的精緻旅遊導覽 PWA，提供地圖、美食、景點及出發清單。",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#F5EBE6",
+  "theme_color": "#2D5A27",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "./icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
